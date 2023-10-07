@@ -74,6 +74,14 @@ app = FastAPI(title = ' Sepsis Prediction API', description = 'API for Sepsis Pr
 
 ""    
 
+# Endpoint for checking if the API is online
+
+@app.get('/status')
+async def status():
+    return{'message':'Online'}
+
+
+
 # Endpoint creation for the Prediction
 
 @app.get('/predict')
