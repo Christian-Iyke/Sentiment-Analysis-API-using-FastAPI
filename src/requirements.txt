@@ -1,0 +1,6 @@
+Union
+FastAPI
+uvicorn
+pandas
+scikit-learn
+scipy

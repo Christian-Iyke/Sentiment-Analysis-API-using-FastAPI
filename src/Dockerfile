@@ -1,17 +1,16 @@
+
 FROM python:3.11
 
-WORKDIR /user/src/main.py
+WORKDIR /main
 
 COPY requirements.txt ./
 
-RUN pip install -r requirements.txt
+RUN pip install -r requirements.txt 
 
-COPY . /main.py
+COPY main.py ./
 
 EXPOSE 8000
 
-CMD ["uvicorn", "main.py", "--host", "0.0.0.0", "--port", "8000"]
-
-
+CMD ["python", "main.py"]
 
 

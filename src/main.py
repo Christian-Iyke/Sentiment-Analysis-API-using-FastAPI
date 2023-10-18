@@ -118,7 +118,8 @@ async def predict (PG: float,PL: float,BPL: float,SK: float,TS:float,BMI: float,
 
 
 if __name__ == '__main__':
+    
 
     #Run the FastAPI Application on host '0.0.0.0' and port 8000
-    uvicorn.run(app, host = '0.0.0.0', port = 8000)
+    uvicorn.run("main:app", host="0.0.0.0", port = 8000, reload = True)
 
