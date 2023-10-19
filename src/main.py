@@ -12,41 +12,26 @@ from sklearn.preprocessing import LabelEncoder
 
 # load ml components
 
-cwd = os.getcwd()
-relative_path = "src\\ML_Model.pkl"
+## A function to load machine Learning components to re-use
+def Ml_loading_components(fp):
+    with open(fp, "rb") as f:
+        object=pickle.load(f)
+        return(object)
 
+# Loading the machine learning components
+DIRPATH = os.path.dirname(os.path.realpath(__file__))
+ml_core_fp = os.path.join(DIRPATH,"ML_Model.pkl")
+ml_components_dict = Ml_loading_components(fp=ml_core_fp)
 
-absolute_path = os.path.join(cwd, relative_path)
-print(absolute_path)
+# Defining the variables for each component
 
-#ML components Reading
+label_encoder = ml_components_dict['label_encoder']  # The label encoder
 
-with open(absolute_path, "rb") as f:
-    ml_components = pickle.load(f)
+# Loaded scaler component
+scaler = ml_components_dict['scaler']
 
-
-
-## Function to Load machine Learning Components to re-use
-#def Ml_components(fp):
-    #with open(fp, 'rb') as f:
-        #object = pickle.load(f)
-        #return(object)
-
-# Loading the Machine Learning Components
-#DIRPATH = os.path.dirname(os.path.realpath(__file__))
-#ml_core_fp = os.path.join(DIRPATH, 'src','ML_Model.pkl') 
-#ml_components_dict = Ml_components(fp=ml_core_fp)
-
-## The Label Encoder Part
-
-label_encoder = ml_components['label_encoder']
-
-# scaler loading
-scaler = ml_components['scaler']
-
-# Model loading
-
-model = ml_components['model']
+#Loaded model 
+model = ml_components_dict['model']
 
 # FastAPI Instance Creating
 app = FastAPI(title = ' Sepsis Prediction API', description = 'API for Sepsis Prediction')
@@ -78,8 +63,6 @@ app = FastAPI(title = ' Sepsis Prediction API', description = 'API for Sepsis Pr
 @app.get('/status')
 async def status():
     return{'message':'Online'}
-
-
 
 # Endpoint creation for the Prediction
 
@@ -121,5 +104,5 @@ if __name__ == '__main__':
     
 
     #Run the FastAPI Application on host '0.0.0.0' and port 8000
-     uvicorn.run("main:app", host="0.0.0.0", port = 8000, reload = True)
+     uvicorn.run("main:app", port = 8000, reload = True)
 

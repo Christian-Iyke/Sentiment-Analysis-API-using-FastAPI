@@ -1,18 +1,47 @@
 
+#FROM python:3.11
+
+#WORKDIR /main
+
+#COPY requirements.txt ./
+
+#COPY ML_Model.pkl ./
+
+#RUN pip install -r requirements.txt 
+
+#COPY main.py ./
+
+#EXPOSE 8000
+
+#CMD ["python", "main:app"]
+
+
+
+# Specifying the base image
 FROM python:3.11
 
-WORKDIR /main
+# Set the working directory to /Sepsis
+WORKDIR /Sepsis
 
-COPY requirements.txt ./
+# Copy the current directory contents into the container at /Sepsis
+COPY ./requirements.txt /Sepsis/requirements.txt
 
-COPY ML_Model.pkl ./
+# Install requirements.txt 
+RUN pip install --no-cache-dir --upgrade -r /Sepsis/requirements.txt
 
-RUN pip install -r requirements.txt 
+# Set up a new user named "user" with user ID 1000
+RUN useradd -m -u 1000 user
+# Switch to the "user" user
+USER user
+# Set home to the user's home directory
+ENV HOME=/home/user \
+    PATH=/home/user/.local/bin:$PATH
 
-COPY main.py ./
+# Set the working directory to the user's home directory
+WORKDIR $HOME/app
 
-EXPOSE 8000
+# Copy the current directory contents into the container at $HOME/app setting the owner to the user
+COPY --chown=user . $HOME/app
 
-CMD ["python", "main:app"]
-
-
+# Start the FastAPI app on port 7860, the default port expected by Spaces
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
