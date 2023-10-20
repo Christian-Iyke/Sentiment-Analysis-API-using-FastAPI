@@ -25,7 +25,6 @@ DIRPATH = os.path.dirname(os.path.realpath(__file__))
 ml_core_fp = os.path.join(DIRPATH,"ML_Model.pkl")
 ml_components_dict = Ml_loading_components(fp=ml_core_fp)
 
-
 # Defining the variables for each component
 
 label_encoder = ml_components_dict['label_encoder']  # The label encoder
@@ -106,5 +105,5 @@ def predict (df:InputData):
 
 if __name__ == "__main__":
 
-     uvicorn.run("main:app2", port=8000, reload=True)
+     uvicorn.run("main:app", port=8000, reload=True)
      #uvicorn, "src.main2:app", reload = True
